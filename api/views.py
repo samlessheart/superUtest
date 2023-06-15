@@ -17,6 +17,7 @@ User = get_user_model()
 class AddUserView(APIView):
     parser_classes = [MultiPartParser, FormParser]
     serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, format=None):
         print(request.data)
@@ -28,13 +29,14 @@ class AddUserView(APIView):
             
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         
-        return Response(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
 
 
 class UserDetailView(APIView):
     parser_classes = [MultiPartParser, FormParser]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         user = self.request.user
